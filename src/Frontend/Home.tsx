@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 function Home() {
     const navigate = useNavigate()
+
+     const navigateToHostedCheckout = () => {
+        navigate("/hosted-checkout")
+    }
     const navigateToIntegratedCheckout = () => {
         navigate("/integrated-checkout")
     }
@@ -14,10 +18,16 @@ function Home() {
                 <VStack margin='auto'>
                     <Heading>Stripe Payments With React & Java</Heading>
                     <Button
+                        colorScheme={'blue'}
+                        onClick={navigateToHostedCheckout}>
+                        Hosted Checkout
+                    </Button>
+                    <Button
                         color="black" variant="subtle" colorPalette={"gray"}
                         onClick={navigateToIntegratedCheckout}>
                         Integrated Checkout
                     </Button>
+                    
                 </VStack>
             </Center>
         </>

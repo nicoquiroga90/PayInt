@@ -44,6 +44,7 @@ function CustomerDetails(props: CustomerDetailsProp) {
 interface CustomerDetailsProp {
     data: ItemData[]
     endpoint: string
+    mode: string
 }
 
 export default CustomerDetails
