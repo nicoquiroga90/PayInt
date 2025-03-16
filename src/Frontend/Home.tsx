@@ -18,7 +18,7 @@ function Home() {
                 <VStack margin='auto'>
                     <Heading>Stripe Payments With React & Java</Heading>
                     <Button
-                        colorScheme={'blue'}
+                        color={'white'}
                         onClick={navigateToHostedCheckout}>
                         Hosted Checkout
                     </Button>
