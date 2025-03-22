@@ -1,4 +1,4 @@
-package com.kinsta.stripejava.backend;
+package com.nicoq.stripe_java.backend;
 
 import com.stripe.model.Product;
 
