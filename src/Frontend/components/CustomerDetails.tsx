@@ -16,21 +16,29 @@ function CustomerDetails(props: CustomerDetailsProp) {
     }
 
     const initiatePayment = () => {
-        fetch(process.env.VITE_SERVER_BASE_URL + props.endpoint, {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                items: props.data.map(elem => ({name: elem.name, id: elem.id})),
-                customerName: name,
-                customerEmail: email,
-            })
+    fetch(import.meta.env.VITE_SERVER_BASE_URL + props.endpoint, {
+        method: "POST",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            items: props.data.map(elem => ({name: elem.name, id: elem.id})),
+            customerName: name,
+            customerEmail: email,
         })
-            .then(r => r.text())
-            .then(r => {
-                window.location.href = r
-            })
-
-    }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(r => {
+            window.location.href = r;
+        })
+        .catch((error) => {
+            console.error("Error initiating payment:", error);
+            alert("Hubo un problema con el pago. Intenta nuevamente.");
+        });
+};
 
     return <>
         <VStack gap={3} width={'xl'}>
