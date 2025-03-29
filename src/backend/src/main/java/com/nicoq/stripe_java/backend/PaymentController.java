@@ -7,56 +7,67 @@ import com.stripe.model.Product;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 public class PaymentController {
 
-    String STRIPE_API_KEY = System.getenv("STRIPE_API_KEY");
+        @Value("${client.base.url}")
+        private String clientBaseURL;
 
-    @PostMapping("/checkout/hosted")
-    String hostedCheckout(@RequestBody RequestDTO requestDTO) throws StripeException {
+        @Value("${stripe.api.key}")
+        private String stripeApiKey;
 
-        Stripe.apiKey = STRIPE_API_KEY;
-        String clientBaseURL = System.getenv("CLIENT_BASE_URL");
+        @PostMapping("/checkout/hosted")
+        public String hostedCheckout(@RequestBody RequestDTO requestDTO) throws StripeException {
 
-        if (clientBaseURL == null) {
-            throw new IllegalArgumentException("CLIENT_BASE_URL is not set in environment variables.");
+                Stripe.apiKey = stripeApiKey;
+
+
+                if (clientBaseURL == null || clientBaseURL.isEmpty()) {
+                        throw new IllegalArgumentException("CLIENT_BASE_URL is not set in application properties.");
+                }
+
+                Customer customer = CustomerUtil.findOrCreateCustomer(requestDTO.getCustomerEmail(),
+                                requestDTO.getCustomerName());
+
+                SessionCreateParams.Builder paramsBuilder = SessionCreateParams.builder()
+                                .setMode(SessionCreateParams.Mode.PAYMENT)
+                                .setCustomer(customer.getId())
+                                .setSuccessUrl(clientBaseURL + "/success?session_id={CHECKOUT_SESSION_ID}")
+                                .setCancelUrl(clientBaseURL + "/failure");
+
+                for (Product product : requestDTO.getItems()) {
+                        paramsBuilder.addLineItem(
+                                        SessionCreateParams.LineItem.builder()
+                                                        .setQuantity(1L)
+                                                        .setPriceData(
+                                                                        PriceData.builder()
+                                                                                        .setProductData(
+                                                                                                        PriceData.ProductData
+                                                                                                                        .builder()
+                                                                                                                        .putMetadata("app_id",
+                                                                                                                                        product.getId())
+                                                                                                                        .setName(product.getName())
+                                                                                                                        .build())
+                                                                                        .setCurrency(ProductDAO
+                                                                                                        .getProduct(product
+                                                                                                                        .getId())
+                                                                                                        .getDefaultPriceObject()
+                                                                                                        .getCurrency())
+                                                                                        .setUnitAmountDecimal(ProductDAO
+                                                                                                        .getProduct(product
+                                                                                                                        .getId())
+                                                                                                        .getDefaultPriceObject()
+                                                                                                        .getUnitAmountDecimal())
+                                                                                        .build())
+                                                        .build());
+                }
+
+                Session session = Session.create(paramsBuilder.build());
+
+                return session.getUrl();
         }
-
-        Customer customer = CustomerUtil.findOrCreateCustomer(requestDTO.getCustomerEmail(), requestDTO.getCustomerName());
-
-        SessionCreateParams.Builder paramsBuilder =
-                SessionCreateParams.builder()
-                        .setMode(SessionCreateParams.Mode.PAYMENT)
-                        .setCustomer(customer.getId())
-                        .setSuccessUrl(clientBaseURL + "/success?session_id={CHECKOUT_SESSION_ID}")
-                        .setCancelUrl(clientBaseURL + "/failure");
-
-        for (Product product : requestDTO.getItems()) {
-            paramsBuilder.addLineItem(
-                    SessionCreateParams.LineItem.builder()
-                            .setQuantity(1L)
-                            .setPriceData(
-                                    PriceData.builder()
-                                            .setProductData(
-                                                    PriceData.ProductData.builder()
-                                                            .putMetadata("app_id", product.getId())
-                                                            .setName(product.getName())
-                                                            .build()
-                                            )
-                                            .setCurrency(ProductDAO.getProduct(product.getId()).getDefaultPriceObject().getCurrency())
-                                            .setUnitAmountDecimal(ProductDAO.getProduct(product.getId()).getDefaultPriceObject().getUnitAmountDecimal())
-                                            .build())
-                            .build());
-        } 
-
-        Session session = Session.create(paramsBuilder.build());
-
-        return session.getUrl();
-    }
 }
