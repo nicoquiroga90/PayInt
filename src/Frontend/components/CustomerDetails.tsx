@@ -34,7 +34,7 @@ function CustomerDetails(props: CustomerDetailsProp) {
       })
       .catch((error) => {
         console.error("Error initiating payment:", error);
-        alert("Hubo un problema con el pago. Intenta nuevamente.");
+        alert("There was a problem with the payment. Please try again.");
       });
   };
 
@@ -49,6 +49,7 @@ function CustomerDetails(props: CustomerDetailsProp) {
         />
         <Input
           variant="outline"
+          size={"md"}
           placeholder="Customer Email"
           onChange={onCustomerEmailChange}
           value={email}

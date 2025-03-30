@@ -1,4 +1,4 @@
-import { Center, Heading, VStack } from "@chakra-ui/react";
+import { Center, Heading, StackSeparator, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import CartItem, { ItemData } from "../components/CartItem.tsx";
 import TotalFooter from "../components/TotalFooter.tsx";
@@ -9,8 +9,8 @@ function HostedCheckout() {
   const [items] = useState<ItemData[]>(Products);
   return (
     <>
-      <Center h={"100vh"} color="black">
-        <VStack margin="24px">
+      <Center h={"120vh"} color="black">
+        <VStack separator={<StackSeparator/>}>
           <Heading>Hosted Checkout Example</Heading>
           {items.map((elem, index) => {
             return (
