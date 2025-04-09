@@ -1,54 +1,98 @@
-# React + TypeScript + Vite
+# Stripe Payment Integration with Spring Boot and React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Stripe Logo](https://stripe.com/img/v3/home/social.png)
 
-Currently, two official plugins are available:
+A minimal implementation of Stripe payment processing using Spring Boot (backend) and React + TypeScript + Vite + Chakra UI (frontend).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
+- Stripe Checkout integration
+- Spring Boot REST API
+- React frontend with TypeScript
+- Vite build tool
+- Chakra UI for UI components
+- Simple payment flow
 
-## Expanding the ESLint configuration
+## 🛠️ Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| Java 17 | Runtime |
+| Spring Boot 3 | Framework |
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| React 18 | UI Library |
+| TypeScript | Type safety |
+| Vite | Build tool |
+| Chakra UI | UI components |
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
+- JDK 17+
+- Stripe API keys
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+### Installation
+1. Clone repo:
+    ```bash
+    git clone https://github.com/nicoquiroga90/PayInt.git
+    cd PayInt
+    ```
+
+2. Backend setup:
+    ```bash
+    cd backend
+    echo "stripe.api.key=your_key" > src/main/resources/application.properties
+    ```
+
+3. Frontend setup:
+    ```bash
+    cd ../frontend
+    echo "VITE_STRIPE_KEY=your_key" > .env
+    ```
+
+4. Run backend:
+    ```bash
+    cd ../backend
+    ./mvnw spring-boot:run
+    ```
+
+5. Run frontend:
+    ```bash
+    cd ../frontend
+    npm install
+    npm run dev
+    ```
+
+## 📂 Project Structure
+
+PayInt/
+└── src/
+    ├── backend/                  # Spring Boot application
+    │   ├── src/main/java/        # Java source code
+    │   └── src/main/resources/   # Config files
+    └── Frontend/                 # React application
+        ├── public/               # Static assets
+        ├── src/                  # React components
+        └── vite.config.ts        # Vite config
+
+
+## 🔧 Configuration
+| File | Purpose |
+|------|---------|
+| `backend/src/main/resources/application.properties` | Spring config |
+| `frontend/.env` | Frontend environment variables |
+
+
+## 🤝 Contributing
+1. Fork the project
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a PR
+
+---
+
+⭐ Feel free to star this repo if you found it useful!
