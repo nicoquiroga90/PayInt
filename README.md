@@ -70,14 +70,12 @@ A minimal implementation of Stripe payment processing using Spring Boot (backend
 
 PayInt/
 └── src/
-    ├── backend/                  # Spring Boot application
-    │   ├── src/main/java/        # Java source code
+    ├── backend/                  # Complete Java solution
+    │   ├── src/main/java/        # All backend logic
     │   └── src/main/resources/   # Config files
-    └── Frontend/                 # React application
-        ├── public/               # Static assets
+    └── Frontend/                 # Optional frontend
         ├── src/                  # React components
-        └── vite.config.ts        # Vite config
-
+        └── vite.config.ts        # Frontend config
 
 ## 🔧 Configuration
 | File | Purpose |
